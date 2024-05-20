@@ -1,0 +1,7 @@
+{
+    "server_id": "YOUR_SERVER_KEY",
+    "discord_token": "YOUR_DISCORD_TOKEN",
+    "channel_id": "YOUR_CHANNEL_ID",
+    "cookie": "__dcfduid=4117dab09f4b11ee92351145e9f33b88; __sdcfduid=4117dab19f4b11ee92351145e9f33b882c19e0b6bab58d67ede31e78904deaac36da3509b66c347e67511b54336dd2c0; locale=en-US; OptanonConsent=isIABGlobal=false&datestamp=Sat+Apr+13+2024+14%3A49%3A01+GMT%2B0500+(West+Kazakhstan+Time)&version=6.33.0&hosts=&landingPath=https%3A%2F%2Fdiscord.com%2F&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1; __cfruid=9370dcdcb67768076bfb8e6843137333a7600d35-1713560966; _cfuvid=Yq3N6oQP_pLc_IKNkXe1HOAFvzuxOosN6zlteqeJAoE-1713560966433-0.0.1.1-604800000; cf_clearance=0SBPa0bAB4h_MA8MuHGuLs0Dg0qYfdKAikSK1qj_CV4-1713924704-1.0.1.1-Rf1XdnclStUSe4qVgDkJ0Wj4IRaDmh2GCo1.Wr1.SGvybXIKQTq2vAicIMUVrYZa8X1FLzOkZuJYvC0wEw8SyQ",
+    "base_url": "https://discord.com/api/v9/"
+}
