@@ -135,7 +135,7 @@ To see the faces closely, we can crop them using the `crop_face` function from `
 
 ### Step 6: Swap Faces and Crop them
 
-We will now iterate over all folders in the `overall` directory and swap all faces in each folder with the first face in that folder, and crop the faces.
+Iterate over all folders in the `overall` directory and swap all faces in each folder with the first face in that folder, and crop the faces.
 
 ```python
 from glob import glob
