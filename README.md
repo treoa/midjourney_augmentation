@@ -169,7 +169,7 @@ All results are saved in the respective folders under the `overall` directory. A
 
 ## Credits
 
-Face swapper used in the current tool is taken from the following repostory. However, during tests, it was found that the results of face detection of insigtface library model named `buffalo_l` are extremely low with accuracy of 61%. Hence, we changed the code of `FaceAnalysis`from **insightface** and changed with the **YOLOv 8 face** model for face detection and its 2D landmarks extraction.
+Face swapper used in the current tool is taken from the tool named ROOP. However, during tests, it was found that the results of face detection of insigtface library model named `buffalo_l` are extremely low with accuracy of 61%. Hence, we changed the code of `FaceAnalysis`from **insightface** and changed with the **YOLOv 8 face** model for face detection and its 2D landmarks extraction.
 
 - https://github.com/s0md3v/roop
 - https://github.com/hpc203/yolov8-face-landmarks-opencv-dnn
