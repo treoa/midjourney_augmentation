@@ -10,6 +10,7 @@ from io import BytesIO
 from PIL import Image
 from pprint import pprint
 
+from glob import glob
 from globals import GlobalConfigs
 from helpers import GetResponse, logme, crop_face
 
@@ -176,10 +177,31 @@ class ImagineService(GlobalConfigs):
         except Exception as e:
             logme(e, level="error")
             return False
+        
+    def __find_next_index(self, base_path):
+        # Define a regex pattern to match numeric directory names
+        overall_pattern = re.compile(r'^\d+[.jpg]*$')
+        digit_pattern = re.compile(r'^\d+$')
+        
+        next_index = 0
+        if os.path.exists(base_path):
+            # List all items in the base directory
+            items = os.listdir(base_path)
+            
+            # Filter and extract numeric indices
+            indices = [item for item in items if overall_pattern.match(item)]
+            
+            # Sort indices and determine the next one
+            if indices:
+                indices.sort()
+                last_index = indices[-1].split(".")[0]
+                next_index = int(last_index) + 1
+        
+        return next_index
     
     def get_images_wo_upscale(self, prompt:str, foldername: str, idx:int = -1, crop: bool = True, realism: bool = True, close_up: bool = True) -> bool:
         """
-        Retrieves images without upscaling from the imagine service.
+        Retrieves images without upscaling from the magine service.
 
         Args:
             prompt (str): The prompt for generating the images.
@@ -188,7 +210,6 @@ class ImagineService(GlobalConfigs):
 
         Returns:
             bool: True if the images are successfully retrieved and saved, False otherwise.
-
         """
         self.__imagine(prompt=prompt, realism=realism, close_up=close_up)
         # Waiting for the response while the imagine command finishes generating images grid
@@ -212,8 +233,11 @@ class ImagineService(GlobalConfigs):
             logme(f"Failed to check for the last message or request an image. Error message: {e}", level="error")
             return False
         try:
-            # Increment the index for the new image
-            folder_name = f"./overall/{foldername[:32].replace(' ', '_').replace('.', '').replace(',', '')}_{uuid.uuid4().hex}"
+            # Increment the index for the new folder
+            # Get the last index of folder in the overall directory
+            # folder_name = f"./overall/{foldername[:32].replace(' ', '_').replace('.', '').replace(',', '')}_{uuid.uuid4().hex}"
+            folder_name = self.__find_next_index(base_path=os.path.join(os.getcwd(), "overall"))
+            folder_name = os.path.join(os.getcwd(), "overall", folder_name)
             if not os.path.exists(folder_name):
                 os.makedirs(folder_name)
             if image_response.status_code != 200:
@@ -231,7 +255,9 @@ class ImagineService(GlobalConfigs):
                     bottom = (i + 1) * (height // 2)
                     cropped_img = img.crop((left, top, right, bottom))
                     cropped_images.append(cropped_img)
-                    filename = os.path.join(os.getcwd(), folder_name, f"{prompt[:16].replace(' ', '_').replace('.', '').replace(',', '')}_{uuid.uuid4().hex}.jpg")
+                    # filename = os.path.join(os.getcwd(), folder_name, f"{prompt[:16].replace(' ', '_').replace('.', '').replace(',', '')}_{uuid.uuid4().hex}.jpg")
+                    filename = self.__find_next_index(base_path=folder_name)
+                    filename = os.path.join(folder_name, f"{filename}.jpg")
                     cropped_img.save(filename)
                     logme(f"File saved as {filename}")
                     if crop:
@@ -305,10 +331,12 @@ class ImagineService(GlobalConfigs):
                     return False
                 try:
                     # Increment the index for the new image
-                    folder_name = f"{prompt[:16].replace(' ', '_')}_{uuid_idx}"
+                    folder_name = self.__find_next_index(base_path=os.path.join(os.getcwd(), "overall"))
+                    folder_name = os.path.join(os.getcwd(), "overall", folder_name)
                     if not os.path.exists(folder_name):
                         os.makedirs(folder_name)
-                    filename = os.path.join(os.getcwd(), f'{folder_name}', f'image_{uuid.uuid4().hex}.jpg')
+                    filename = self.__find_next_index(base_path=os.path.join(os.getcwd(), folder_name))
+                    filename = os.path.join(folder_name, f"{filename}.jpg")
                     if image_response.status_code != 200:
                         logme(f"The error occurred during getting the image for saving with request: {image_response.text}", level="error")
                         return False

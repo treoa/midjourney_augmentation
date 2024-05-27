@@ -46,7 +46,6 @@ class YOLOv8_FACE:
 
     def softmax(self, x, axis=1):
         x_exp = np.exp(x)
-        # 如果是列向量，则axis=0
         x_sum = np.sum(x_exp, axis=axis, keepdims=True)
         s = x_exp / x_sum
         return s
@@ -79,11 +78,6 @@ class YOLOv8_FACE:
         blob = cv2.dnn.blobFromImage(input_img)
         self.net.setInput(blob)
         outputs = self.net.forward(self.net.getUnconnectedOutLayersNames())
-        # if isinstance(outputs, tuple):
-        #     outputs = list(outputs)
-        # if float(cv2.__version__[:3])>=4.7:
-        #     outputs = [outputs[2], outputs[0], outputs[1]] ###opencv4.7需要这一步，opencv4.5不需要
-        # Perform inference on the image
         det_bboxes, det_conf, det_classid, landmarks = self.post_process(outputs, scale_h, scale_w, padh, padw)
         return det_bboxes, det_conf, det_classid, landmarks
 
@@ -167,7 +161,6 @@ class YOLOv8_FACE:
                 cv2.circle(image, (int(kp[i * 3]), int(kp[i * 3 + 1])), 4, (0, 255, 0), thickness=-1)
                 # cv2.putText(image, str(i), (int(kp[i * 3]), int(kp[i * 3 + 1]) - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), thickness=1)
         return image
-
 
 
 class FaceAnalysis:
